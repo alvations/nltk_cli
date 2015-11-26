@@ -9,9 +9,9 @@ Usage:
   stanford.py (-h | --help)
   stanford.py --version
   
-  stanford.py --nertag FILE [--lang LANG]
   stanford.py --postag FILE [--lang LANG]
   stanford.py --lexparse FILE [--lang LANG]
+  stanford.py --nertag FILE
   
 Options:
   -h --help     Show this screen.
@@ -22,8 +22,8 @@ Options:
   --input		Path to input file.
   --output		Path to output file [default: None].
   --postag      TL;DR, "I just want to POS tag this file".
-  --nertag      TL;DR, "I just want to NER tag this file".
-  --lexparse    TL;DR, "I just want to parse this file".
+  --nertag      TL;DR, "I just want to NER tag this file" (only English).
+  --lexparse    TL;DR, "I just want to parse this file" [default: eng].
   --lang		The language option for TL;DR options [default: eng].
 """
 
@@ -54,11 +54,48 @@ parsers = {
 }
 
 
+lexparser_languages = {
+# Arabic
+'ara': ['arabicFactored.ser.gz'],
+# Chinese
+'cmn': ['chinesePCFG.ser.gz', 'chineseFactored.ser.gz',
+'xinhuaPCFG.ser.gz', 'xinhuaFactored.ser.gz', 'xinhuaFactoredSegmenting.ser.gz'],
+# German
+'deu':['germanPCFG.ser.gz', 'germanFactored.ser.gz'],
+# English
+'eng': ['englishRNN.ser.gz', 'englishPCFG.ser.gz', 
+'englishFactored.ser.gz', 'englishPCFG.caseless.ser.gz', 'wsjPCFG.ser.gz',
+'wsjRNN.ser.gz', 'wsjFactored.ser.gz'],
+# French
+'fre': ['frenchFactored.ser.gz'],
+# Spanish
+'spa': ['spanishPCFG.ser.gz']}
+
+postagger_languages = {
+# Arabic
+'ara': ['arabic.tagger'], 
+# Chinese
+'cmn': ['chinese-distsim.tagger', 'chinese-nodistsim.tagger'],
+# English
+'eng': ['english-bidirectional-distsim.tagger', 
+'english-caseless-left3words-distsim.tagger', 
+'english-left3words-distsim.tagger', 'wsj-0-18-bidirectional-distsim.tagger', 
+'wsj-0-18-bidirectional-nodistsim.tagger', 
+'wsj-0-18-caseless-left3words-distsim.tagger', 
+'wsj-0-18-left3words-distsim.tagger', 'wsj-0-18-left3words-nodistsim.tagger'],
+# French
+'fre': ['french.tagger'],
+# German
+'deu': ['german-dewac.tagger', 'german-fast-caseless.tagger', 
+'german-fast.tagger', 'german-hgc.tagger'],
+# Spanish
+'spa': ['spanish-distsim.tagger', 'spanish.tagger']
+}
+
 def stanford_tag_sents(sentences, tagger):
 	tagged_sents = tagger.tag_sents(sentences)
 	for sent in tagged_sents:
 		yield " ".join(word + '#' + pos for word, pos in sent)
-
 
 def stanford_parse_sents(sentences, parser):
 	parsed_sents = sum([list(i) for i in parser.parse_sents(sentences)], [])
@@ -89,24 +126,41 @@ def initialize_iofiles(arugments):
 	
 def augment_arugments(arguments):
 	homedir = os.path.expanduser("~")
+	# Augment arugments for LexParser.
 	if '--lexparse' in arguments.keys() and arguments['--lexparse']:
 		arguments['--tool']	= 'lexparser'
 		arguments['--jar']	= homedir +'/stanford-parser/stanford-parser.jar'
 		arguments['--modeljar']	= homedir +'/stanford-parser/stanford-parser-3.5.2-models.jar'
-		arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
+		if arguments['--lang'] == None:
+			arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
+		else:
+			arguments['--model'] = 'edu/stanford/nlp/models/lexparser/' 
+			arguments['--model']+= lexparser_languages[arguments['--lang']][0]
+	# Augment arugments for POSTagger.
 	elif '--postag' in arguments.keys() and arguments['--postag']:
 		arguments['--tool']	= 'postagger'
 		arguments['--jar']	= homedir +'/stanford-postagger/stanford-postagger.jar'
-		arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
+		if arguments['--lang'] == None:
+			arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
+		else:
+			arguments['--model'] =  homedir + '/stanford-postagger/models/'
+			arguments['--model']+= postagger_languages[arguments['--lang']][0]
+	# Augment arugments for NERTagger.
 	elif '--nertag' in arguments.keys() and arguments['--nertag']:
 		arguments['--tool']	= 'nertagger'
 		arguments['--jar']	= homedir +'/stanford-ner/stanford-ner.jar'
 		arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
 
+
+def augment_langspec_arugments(arguments):
+	pass
+
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='NLTK CLI (Stanford Tools) version 0.0.1')
+	# Augment arguments for TL;DR commands.
 	if arguments['--tool'] is None:
 		augment_arugments(arguments)
+		
 	tool, process = initialize_tool(arguments)
 	infile, outfile = initialize_iofiles(arguments)
 	if outfile:
