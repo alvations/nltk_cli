@@ -45,7 +45,6 @@ cd nltk_cli
 # Stanford NLP Tools
 ###############################################################################
 
-
 # Using Stanford LexParser
 python3 stanford.py --tool=lexparser \
 --jar=$HOME/stanford-parser/stanford-parser.jar \
@@ -102,14 +101,55 @@ python senna.py --postag --input test.txt
 python senna.py --nertag --input test.txt
 python senna.py --chunktag --input test.txt
 
-# Tl;DR way to use SENNA ChunkTagger to extract NP, make sure your `senna` 
+# Tl;DR way to use SENNA ChunkTagger to extract NPs, make sure your `senna` 
 # directory is in your $HOME directory and you have installed as per the 
 # installation instruction above, otherwise, these Tl;DR might not work.
 python senna.py --np test.txt
 python senna.py --vp test.txt
 python senna.py --chunk NP test.txt
 python senna.py --chunk VP test.txt
+
+##############################################################################
+# Terminator Term Extract filters.
+##############################################################################
+
+# Extracts NPs using SENNA ChunkTagger.
+python3 senna.py --np test.txt --output test.np
+# Filter NPs using Terminator semi-rule based cleaner. Input can be either 
+# one NP per line or multiple NPs per line separated by pipe, i.e. "|"
+python3 clean_np.py test.np
+# If you would like to output the filtered NPs:
+python3 clean_np.py test.np --output test.filtered.np
+# To remove empty lines from the filtered NPs list:
+python3 clean_np.py test.np | sed '/^$/d'
+# To get unique list of NPs
+python3 clean_np.py test.np | sed '/^$/d' | sort | uniq
 ```
 
-
 Note: The `test.txt` file is the `fish-head-curry` file from the [NTU-Multilingual Corpus](http://compling.hss.ntu.edu.sg/ntumc/)
+
+FAQ
+====
+
+If any of your output from the commands above cannot be output using `>`, e.g.
+
+```bash
+$ python senna.py --np test.txt > test.np
+Traceback (most recent call last):
+  File "senna.py", line 114, in <module>
+    print(processed_sent)
+UnicodeEncodeError: 'ascii' codec can't encode character u'\u2019' in position 9: ordinal not in range(128)
+```
+
+Then try the `--output` parameter, e.g.:
+
+```bash
+$ python senna.py --np test.txt --output test.np
+```
+
+Alternatively, you can set your STDOUT encoding, e.g.:
+
+```bash
+$ export PYTHONIOENCODING=utf-8
+$ python senna.py --np test.txt > test.np
+```
