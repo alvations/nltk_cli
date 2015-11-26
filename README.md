@@ -10,6 +10,7 @@ Installation
 
 ```bash
 cd $HOME
+
 # Downloads the Stanford NLP tools
 wget http://nlp.stanford.edu/software/stanford-ner-2015-04-20.zip
 wget http://nlp.stanford.edu/software/stanford-postagger-full-2015-04-20.zip
@@ -22,6 +23,12 @@ unzip stanford-postagger-full-2015-04-20.zip
 mv stanford-postagger-full-2015-04-20 stanford-postagger
 mv stanford-parser-full-2015-04-20 stanford-parser
 mv stanford-ner-2015-04-20 stanford-ner
+
+# Download the SENNA tools.
+wget http://ronan.collobert.com/senna/senna-v3.0.tgz
+tar zxvf senna-v3.0.tgz
+mv senna-v3.0 senna
+
 # Install NLTK
 pip install -U nltk
 # Git clone this repository.
