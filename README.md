@@ -1,6 +1,7 @@
 # nltk_cli
 
-This repo contains the **TL;DR** solutions to using Stanford tools with NLTK.
+This repo contains the **TL;DR** solutions to using third-party tools 
+(e.g. Stanford NLP, SENNA NLP, etc.) with NLTK.
 
 **Disclaimers**: It comes with unexpected caveats that are idiosyncratic to (i) the data you are processing and (ii) how NLTK API and Stanford NLP tools work. 
 
@@ -33,6 +34,11 @@ Usage
 ```bash
 cd nltk_cli
 
+###############################################################################
+# Stanford NLP Tools
+###############################################################################
+
+
 # Using Stanford LexParser
 python3 stanford.py --tool=lexparser \
 --jar=$HOME/stanford-parser/stanford-parser.jar \
@@ -64,6 +70,38 @@ python3 stanford.py --lexparse test.txt \
 --model=edu/stanford/nlp/models/lexparser/wsjPCFG.ser.gz 
 python3 stanford.py --postag test.txt \
 --model=$HOME/stanford-postagger/models/english-bidirectional-distsim.tagger 
+
+###############################################################################
+# SENNA NLP Tools
+###############################################################################
+
+# Using SENNA POSTagger.
+python senna.py --sennadir $HOME/senna --postag --input test.txt
+
+# Using SENNA NERTagger.
+python senna.py --sennadir $HOME/senna --nertag --input test.txt
+
+# Using SENNA ChunkTagger.
+python senna.py --sennadir $HOME/senna --chunktag --input test.txt
+
+# TL;DR NP Chunk Extractor using SENNA ChunkTagger.
+python senna.py --sennadir $HOME/senna --chunk NP test.txt
+python senna.py --sennadir $HOME/senna --np test.txt
+
+# Tl;DR way to use SENNA Taggers, make sure your `senna` directory is in your
+# $HOME directory and you have installed as per the installation instruction 
+# above, otherwise, these Tl;DR might not work.
+python senna.py --postag --input test.txt
+python senna.py --nertag --input test.txt
+python senna.py --chunktag --input test.txt
+
+# Tl;DR way to use SENNA ChunkTagger to extract NP, make sure your `senna` 
+# directory is in your $HOME directory and you have installed as per the 
+# installation instruction above, otherwise, these Tl;DR might not work.
+python senna.py --np test.txt
+python senna.py --vp test.txt
+python senna.py --chunk NP test.txt
+python senna.py --chunk VP test.txt
 ```
 
 

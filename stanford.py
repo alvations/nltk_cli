@@ -9,11 +9,11 @@ Usage:
   stanford.py (-h | --help)
   stanford.py --version
   
-  stanford.py --postag FILE [--lang LANG]
-  stanford.py --lexparse FILE [--lang LANG]
-  stanford.py --postag FILE [--model PATH]
-  stanford.py --lexparse FILE [--model PATH]
-  stanford.py --nertag FILE
+  stanford.py --postag FILE [--lang LANG] [--output NONE]
+  stanford.py --lexparse FILE [--lang LANG] [--output NONE]
+  stanford.py --postag FILE [--model PATH] [--output NONE]
+  stanford.py --lexparse FILE [--model PATH] [--output NONE]
+  stanford.py --nertag FILE [--output NONE]
   
 Options:
   -h --help     Show this screen.
@@ -23,7 +23,7 @@ Options:
   --modeljar	Path to model jar file (Only use with Stanford parsers).
   --input		Path to input file.
   --output		Path to output file [default: None].
-  --postag      TL;DR, "I just want to POS tag this file".
+  --postag      TL;DR, "I just want to POS tag this file" [default: eng].
   --nertag      TL;DR, "I just want to NER tag this file" (only English).
   --lexparse    TL;DR, "I just want to parse this file" [default: eng].
   --lang		The language option for TL;DR options [default: eng].
@@ -154,10 +154,7 @@ def augment_arugments(arguments):
 		arguments['--tool']	= 'nertagger'
 		arguments['--jar']	= homedir +'/stanford-ner/stanford-ner.jar'
 		arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
-
-
-def augment_langspec_arugments(arguments):
-	pass
+		
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='NLTK CLI (Stanford Tools) version 0.0.1')
