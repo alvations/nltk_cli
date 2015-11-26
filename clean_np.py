@@ -16,7 +16,7 @@ https://github.com/alvations/Terminator (Tan, 2015)
 
 Usage:
 
-	python3 nltk_cli/clean_np.py test.np test.filtered.np
+	python3 nltk_cli/clean_np.py test.np --output test.filtered.np
 
 Reference:
 
