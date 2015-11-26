@@ -11,7 +11,7 @@ Usage:
   
   stanford.py --postag FILE [--lang LANG]
   stanford.py --lexparse FILE [--lang LANG]
-    stanford.py --postag FILE [--model PATH]
+  stanford.py --postag FILE [--model PATH]
   stanford.py --lexparse FILE [--model PATH]
   stanford.py --nertag FILE
   
