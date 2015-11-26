@@ -131,20 +131,22 @@ def augment_arugments(arguments):
 		arguments['--tool']	= 'lexparser'
 		arguments['--jar']	= homedir +'/stanford-parser/stanford-parser.jar'
 		arguments['--modeljar']	= homedir +'/stanford-parser/stanford-parser-3.5.2-models.jar'
-		if arguments['--lang'] == None:
-			arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
-		else:
-			arguments['--model'] = 'edu/stanford/nlp/models/lexparser/' 
-			arguments['--model']+= lexparser_languages[arguments['--lang']][0]
+		if arugments['--model'] is None:		
+			if arguments['--lang'] == None:
+				arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
+			else:
+				arguments['--model'] = 'edu/stanford/nlp/models/lexparser/' 
+				arguments['--model']+= lexparser_languages[arguments['--lang']][0]
 	# Augment arugments for POSTagger.
 	elif '--postag' in arguments.keys() and arguments['--postag']:
 		arguments['--tool']	= 'postagger'
 		arguments['--jar']	= homedir +'/stanford-postagger/stanford-postagger.jar'
-		if arguments['--lang'] == None:
-			arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
-		else:
-			arguments['--model'] =  homedir + '/stanford-postagger/models/'
-			arguments['--model']+= postagger_languages[arguments['--lang']][0]
+		if arugments['--model'] is None:	
+			if arguments['--lang'] == None:
+				arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
+			else:
+				arguments['--model'] =  homedir + '/stanford-postagger/models/'
+				arguments['--model']+= postagger_languages[arguments['--lang']][0]
 	# Augment arugments for NERTagger.
 	elif '--nertag' in arguments.keys() and arguments['--nertag']:
 		arguments['--tool']	= 'nertagger'
