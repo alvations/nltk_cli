@@ -29,7 +29,9 @@ Options:
 
 from __future__ import print_function
 import io
+import os
 import re
+
 
 from nltk.tag.stanford import StanfordPOSTagger, StanfordNERTagger
 from nltk.parse.stanford import StanfordParser
@@ -53,8 +55,9 @@ parsers = {
 
 
 def stanford_tag_sents(sentences, tagger):
-	tagger = tagger(model_filename=model_filename, path_to_jar=path_to_jar)
-	return tagger.tag_sents(sentences)
+	tagged_sents = tagger.tag_sents(sentences)
+	for sent in tagged_sents:
+		yield " ".join(word + '#' + pos for word, pos in sent)
 
 
 def stanford_parse_sents(sentences, parser):
@@ -67,7 +70,7 @@ def initialize_tool(arguments):
 	"""
 	tool_name = arguments['--tool']
 	if tool_name in taggers:
-		tagger = taggers[tool_name](model_path=arguments['--model'], path_to_jar=arguments['--jar'])
+		tagger = taggers[tool_name](model_filename=arguments['--model'], path_to_jar=arguments['--jar'])
 		return tagger, stanford_tag_sents
 	elif tool_name in parsers:
 		parser = parsers[tool_name](model_path=arguments['--model'], path_to_models_jar=arguments['--modeljar'], path_to_jar=arguments['--jar'])
@@ -84,8 +87,26 @@ def initialize_iofiles(arugments):
 		outfile = arugments['--output']
 	return infile, outfile
 	
+def augment_arugments(arguments):
+	homedir = os.path.expanduser("~")
+	if '--lexparse' in arguments.keys() and arguments['--lexparse']:
+		arguments['--tool']	= 'lexparser'
+		arguments['--jar']	= homedir +'/stanford-parser/stanford-parser.jar'
+		arguments['--modeljar']	= homedir +'/stanford-parser/stanford-parser-3.5.2-models.jar'
+		arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
+	elif '--postag' in arguments.keys() and arguments['--postag']:
+		arguments['--tool']	= 'postagger'
+		arguments['--jar']	= homedir +'/stanford-postagger/stanford-postagger.jar'
+		arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
+	elif '--nertag' in arguments.keys() and arguments['--nertag']:
+		arguments['--tool']	= 'nertagger'
+		arguments['--jar']	= homedir +'/stanford-ner/stanford-ner.jar'
+		arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
+
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='NLTK CLI (Stanford Tools) version 0.0.1')
+	if arguments['--tool'] is None:
+		augment_arugments(arguments)
 	tool, process = initialize_tool(arguments)
 	infile, outfile = initialize_iofiles(arguments)
 	if outfile:
