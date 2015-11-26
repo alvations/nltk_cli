@@ -58,6 +58,13 @@ python3 stanford.py --tool=nertagger \
 python3 stanford.py --postag test.txt
 python3 stanford.py --nertag test.txt
 python3 stanford.py --lexparser test.txt
+
+# TL;DR with model option.
+python3 stanford.py --lexparse test.txt \
+--model=edu/stanford/nlp/models/lexparser/wsjPCFG.ser.gz 
+python3 stanford.py --postag test.txt \
+--model=$HOME/stanford-postagger/models/english-bidirectional-distsim.tagger 
 ```
+
 
 Note: The `test.txt` file is the `fish-head-curry` file from the [NTU-Multilingual Corpus](http://compling.hss.ntu.edu.sg/ntumc/)
