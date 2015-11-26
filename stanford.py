@@ -11,6 +11,8 @@ Usage:
   
   stanford.py --postag FILE [--lang LANG]
   stanford.py --lexparse FILE [--lang LANG]
+    stanford.py --postag FILE [--model PATH]
+  stanford.py --lexparse FILE [--model PATH]
   stanford.py --nertag FILE
   
 Options:
@@ -131,7 +133,7 @@ def augment_arugments(arguments):
 		arguments['--tool']	= 'lexparser'
 		arguments['--jar']	= homedir +'/stanford-parser/stanford-parser.jar'
 		arguments['--modeljar']	= homedir +'/stanford-parser/stanford-parser-3.5.2-models.jar'
-		if arugments['--model'] is None:		
+		if arguments['--model'] is None:		
 			if arguments['--lang'] == None:
 				arguments['--model'] = 'edu/stanford/nlp/models/lexparser/englishPCFG.ser.gz'
 			else:
@@ -141,7 +143,7 @@ def augment_arugments(arguments):
 	elif '--postag' in arguments.keys() and arguments['--postag']:
 		arguments['--tool']	= 'postagger'
 		arguments['--jar']	= homedir +'/stanford-postagger/stanford-postagger.jar'
-		if arugments['--model'] is None:	
+		if arguments['--model'] is None:	
 			if arguments['--lang'] == None:
 				arguments['--model'] = homedir + '/stanford-postagger/models/english-bidirectional-distsim.tagger'
 			else:
