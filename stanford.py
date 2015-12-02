@@ -169,7 +169,7 @@ def augment_arugments(arguments):
 			if arguments['--lang'] == None:
 				arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
 			else:
-				arguments['--model'] =  homedir + '/stanford-nertagger/models/'
+				arguments['--model'] =  homedir + '/stanford-ner/classifiers/'
 				arguments['--model']+= nertagger_languages[arguments['--lang']][0]
 		
 
