@@ -94,6 +94,16 @@ postagger_languages = {
 'spa': ['spanish-distsim.tagger', 'spanish.tagger']
 }
 
+nertagger_languages = {
+# Chinese
+'cmn': ['chinese.misc.distsim.crf.ser.gz']
+# German
+'deu': ['german.dewac_175m_600.crf.ser.gz', 'german.hgc_175m_600.crf.ser.gz'],
+# English
+'eng': ['english.all.3class.distsim.crf.ser.gz', 'english.conll.4class.distsim.crf.ser.gz', 
+'english.muc.7class.distsim.crf.ser.gz', 'example.serialized.ncc.ncc.ser.gz']
+}
+
 def stanford_tag_sents(sentences, tagger):
 	tagged_sents = tagger.tag_sents(sentences)
 	for sent in tagged_sents:
@@ -153,7 +163,12 @@ def augment_arugments(arguments):
 	elif '--nertag' in arguments.keys() and arguments['--nertag']:
 		arguments['--tool']	= 'nertagger'
 		arguments['--jar']	= homedir +'/stanford-ner/stanford-ner.jar'
-		arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
+		if arguments['--model'] is None:
+			if arguments['--lang'] == None:
+				arguments['--model'] = homedir + '/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz'
+			else:
+				arguments['--model'] =  homedir + '/stanford-postagger/models/'
+				arguments['--model']+= nertagger_languages[arguments['--lang']][0]
 		
 
 if __name__ == '__main__':
