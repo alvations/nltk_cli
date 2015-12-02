@@ -27,7 +27,6 @@ mv stanford-ner-2015-04-20 stanford-ner
 # Download the Stanford Spanish models.
 wget http://nlp.stanford.edu/software/stanford-spanish-corenlp-2015-01-08-models.jar
 unzip stanford-spanish-corenlp-2015-01-08-models.jar -d stanford-spanish
-cp stanford-spanish/edu/stanford/nlp/models/pos-tagger/spanish/* stanford-postagger/models/
 cp stanford-spanish/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
 
 # Download the Stanford German models.
