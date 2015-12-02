@@ -11,7 +11,7 @@ Installation
 ```bash
 cd $HOME
 
-# Downloads the Stanford NLP tools
+# Download the Stanford NLP tools
 wget http://nlp.stanford.edu/software/stanford-ner-2015-04-20.zip
 wget http://nlp.stanford.edu/software/stanford-postagger-full-2015-04-20.zip
 wget http://nlp.stanford.edu/software/stanford-parser-full-2015-04-20.zip
@@ -23,6 +23,24 @@ unzip stanford-postagger-full-2015-04-20.zip
 mv stanford-postagger-full-2015-04-20 stanford-postagger
 mv stanford-parser-full-2015-04-20 stanford-parser
 mv stanford-ner-2015-04-20 stanford-ner
+
+# Download the Stanford Spanish models.
+wget http://nlp.stanford.edu/software/stanford-spanish-corenlp-2015-01-08-models.jar
+unzip stanford-spanish-corenlp-2015-01-08-models.jar -d stanford-spanish
+cp stanford-spanish/edu/stanford/nlp/models/pos-tagger/spanish/* stanford-postagger/models/
+cp stanford-spanish/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
+
+# Download the Stanford German models.
+wget http://nlp.stanford.edu/software/stanford-german-2015-01-30-models.jar
+unzip stanford-german-2015-01-30-models.jar -d stanford-german
+cp stanford-german/edu/stanford/nlp/models/pos-tagger/german/* stanford-postagger/models/
+cp stanford-german/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
+
+# Download the Stanford Chinese models.
+wget http://nlp.stanford.edu/software/stanford-chinese-corenlp-2015-04-20-models.jar
+unzip stanford-chinese-corenlp-2015-04-20-models.jar -d stanford-chinese-ner
+cp stanford-chinese-ner/edu/stanford/nlp/models/pos-tagger/german/* stanford-postagger/models/
+cp stanford-chinese-ner/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
 
 # Download the SENNA tools.
 wget http://ronan.collobert.com/senna/senna-v3.0.tgz
