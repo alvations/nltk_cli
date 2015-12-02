@@ -91,6 +91,8 @@ python3 stanford.py --lexparse test.txt \
 --model=edu/stanford/nlp/models/lexparser/wsjPCFG.ser.gz 
 python3 stanford.py --postag test.txt \
 --model=$HOME/stanford-postagger/models/english-bidirectional-distsim.tagger 
+python3 stanford.py --nertag test.txt \
+--model=$HOME/stanford-ner/classifiers/english.all.3class.distsim.crf.ser.gz
 
 ###############################################################################
 # SENNA NLP Tools
