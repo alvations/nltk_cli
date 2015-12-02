@@ -96,12 +96,14 @@ postagger_languages = {
 
 nertagger_languages = {
 # Chinese
-'cmn': ['chinese.misc.distsim.crf.ser.gz']
+'cmn': ['chinese.misc.distsim.crf.ser.gz'],
 # German
 'deu': ['german.dewac_175m_600.crf.ser.gz', 'german.hgc_175m_600.crf.ser.gz'],
 # English
 'eng': ['english.all.3class.distsim.crf.ser.gz', 'english.conll.4class.distsim.crf.ser.gz', 
-'english.muc.7class.distsim.crf.ser.gz', 'example.serialized.ncc.ncc.ser.gz']
+'english.muc.7class.distsim.crf.ser.gz', 'example.serialized.ncc.ncc.ser.gz'],
+# Spansih
+'spa': ['spanish.ancora.distsim.s512.crf.ser.gz']
 }
 
 def stanford_tag_sents(sentences, tagger):
