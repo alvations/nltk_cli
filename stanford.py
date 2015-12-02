@@ -11,9 +11,11 @@ Usage:
   
   stanford.py --postag FILE [--lang LANG] [--output NONE]
   stanford.py --lexparse FILE [--lang LANG] [--output NONE]
+  stanford.py --nertag FILE [--lang LANG] [--output NONE] 
+  
   stanford.py --postag FILE [--model PATH] [--output NONE]
   stanford.py --lexparse FILE [--model PATH] [--output NONE]
-  stanford.py --nertag FILE [--lang LANG] [--output NONE] 
+  stanford.py --nertag FILE [--model LANG] [--output NONE] 
   
 Options:
   -h --help     Show this screen.
