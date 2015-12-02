@@ -33,13 +33,11 @@ cp stanford-spanish/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
 # Download the Stanford German models.
 wget http://nlp.stanford.edu/software/stanford-german-2015-01-30-models.jar
 unzip stanford-german-2015-01-30-models.jar -d stanford-german
-cp stanford-german/edu/stanford/nlp/models/pos-tagger/german/* stanford-postagger/models/
 cp stanford-german/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
 
 # Download the Stanford Chinese models.
 wget http://nlp.stanford.edu/software/stanford-chinese-corenlp-2015-04-20-models.jar
 unzip stanford-chinese-corenlp-2015-04-20-models.jar -d stanford-chinese-ner
-cp stanford-chinese-ner/edu/stanford/nlp/models/pos-tagger/german/* stanford-postagger/models/
 cp stanford-chinese-ner/edu/stanford/nlp/models/ner/* stanford-ner/classifiers/
 
 # Download the SENNA tools.
