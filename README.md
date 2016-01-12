@@ -148,6 +148,9 @@ Note: The `test.txt` file is the `fish-head-curry` file from the [NTU-Multilingu
 FAQ
 ====
 
+**UnicodeEncodeError: 'ascii' codec can't encode character...**
+
+
 If any of your output from the commands above cannot be output using `>`, e.g.
 
 ```bash
@@ -169,4 +172,31 @@ Alternatively, you can set your STDOUT encoding, e.g.:
 ```bash
 $ export PYTHONIOENCODING=utf-8
 $ python senna.py --np test.txt > test.np
+```
+
+----
+
+**IndexError: Misalignment error occurred at sentence number ...**
+
+If you get an error as such:
+
+```bash 
+$ python senna.py --np test.txt --output test.np
+Traceback (most recent call last):
+  File "senna.py", line 110, in <module>
+    for processed_sent in process(sentences, tool, arguments['--chunk']):
+  File "senna.py", line 83, in senna_extract_chunks
+    tagged_sents = chunker.tag_sents(sentences)
+  File "/usr/local/lib/python2.7/dist-packages/nltk/tag/senna.py", line 70, in tag_sents
+    tagged_sents = super(SennaChunkTagger, self).tag_sents(sentences)
+  File "/usr/local/lib/python2.7/dist-packages/nltk/classify/senna.py", line 167, in tag_sents
+    % sentence_index)
+IndexError: Misalignment error occurred at sentence number 11. Possible reason is that the sentence size exceeded the maximum size. Check the documentation of Senna class for more information.
+```
+
+First check that you have no empty lines in your input file, then remove the empty line, you can also do:
+
+```bash 
+$ sed '/^$/d' test.txt > test.noempty.txt
+$ python senna.py --np test.noempty.txt --output test.np
 ```
