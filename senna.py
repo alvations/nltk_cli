@@ -16,6 +16,7 @@ Usage:
   senna.py --postag  FILE [--output NONE]
   senna.py --nertag  FILE [--output NONE]
   senna.py --chunktag  FILE [--output NONE]
+  senna.py --chunk2 CHUNKTYPES FILE
   
 Options:
   -h --help     		Show this screen.
@@ -28,6 +29,7 @@ Options:
   --chunk CHUNKTYPE  	TL;DR, "I just want to extract CHUNKTYPE from this file".
   --np  	    		TL;DR, "I just want to extract NPs from this file".
   --vp  	    		TL;DR, "I just want to extract NPs from this file".
+  --chunk2 CHUNKTYPE     TL;DR, "I just want to combine CHUNKTYPES (e.g. VP+ADJP) from this file".
 """
 
 from __future__ import print_function
@@ -45,6 +47,7 @@ senna_tool = {
 '--nertag': SennaNERTagger,
 '--chunktag': SennaChunkTagger,
 '--chunk': SennaChunkTagger,
+'--chunk2': SennaChunkTagger,
 }
 
 
@@ -87,7 +90,32 @@ def senna_extract_chunks(sentences, chunker, chunk_type):
 			chunks, positions = zip(*chunk_outputs)
 			yield "|".join(chunks)
 		else:
-			yield str("!!! NO CHUNK of " + chunk_type + "in this sentence !!!")
+			yield str("!!! NO CHUNK of " + chunk_type + " in this sentence !!!")
+
+def senna_extract_combined_chunks(sentences, chunker, chunk_types):
+	_chunk_types = chunk_types.split('+')
+	tagged_sents = chunker.tag_sents(sentences)
+
+	for tagged_sent in tagged_sents:
+		chunks1 = list(chunker.bio_to_chunks(tagged_sent, _chunk_types[0]))
+		chunks2 = list(chunker.bio_to_chunks(tagged_sent, _chunk_types[1]))
+
+		chunk_combinations = []
+		jumper = 0
+		for chunk1 in chunks1:
+			chunk1_end_position = int(chunk1[1].split('-')[-1])
+			for i, chunk2 in enumerate(chunks2[jumper:]):
+				chunk2_start_position = int(chunk2[1].split('-')[0])
+				if chunk2_start_position == chunk1_end_position+1:
+					jumper = i
+					chunks, positions = zip(*[chunk1, chunk2])
+					chunk_combinations.append("\t".join(chunks))
+		if chunk_combinations:
+			yield ('|'.join(chunk_combinations))
+		else:
+			yield str("!!! NO CHUNK of " + chunk_types + " in this sentence !!!")
+			
+
 
 if __name__ == '__main__':
 	arguments = docopt(__doc__, version='NLTK CLI (Senna Tools) version 0.0.1')
@@ -102,6 +130,9 @@ if __name__ == '__main__':
 		
 	if arguments['--chunk']:
 		process = senna_extract_chunks
+	elif arguments['--chunk2']:
+		process = senna_extract_combined_chunks
+		arguments['--chunk'] = arguments['--chunk2']
 	else:
 		process = senna_tag_sents
 			
