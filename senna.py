@@ -28,7 +28,7 @@ Options:
   --chunktag  			Option to chunk (i.e. BIO tag) a file.
   --chunk CHUNKTYPE  	TL;DR, "I just want to extract CHUNKTYPE from this file".
   --np  	    		TL;DR, "I just want to extract NPs from this file".
-  --vp  	    		TL;DR, "I just want to extract NPs from this file".
+  --vp  	    		TL;DR, "I just want to extract VPs from this file".
   --chunk2 CHUNKTYPE     TL;DR, "I just want to combine CHUNKTYPES (e.g. VP+ADJP) from this file".
 """
 
